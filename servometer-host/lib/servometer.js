@@ -4,6 +4,14 @@ var serialport = require('serialport'),
   sys = require('sys'),
   https = require('https');
 
+function handleSerialData(data) {
+  console.log('serial incoming -> ', data);
+}
+
+function handleSerialError(err) {
+  console.error('error on serial connection: ', err);
+}
+
 /*
   servometer host application
   This nodeJS application handles requesting metrics data from an API
@@ -24,30 +32,27 @@ function ServoMeter(options) {
 ServoMeter.prototype.start = function() {
   var self = this;
   console.log('starting ServoMeter');
+
   var port = new SerialPort(self._serialPort, {parser: serialport.parsers.readline('\n')});
+
+  function refreshMetrics(){
+    self.refreshMetrics(port);
+  }
 
   port.on('open', function() {
     console.log('serial connection opened on ' + self._serialPort);
 
     // wait 1 second to make sure serial is established
-    setTimeout(function() {
-      self.refreshMetrics(port);
-    }, 1000)
+    setTimeout(refreshMetrics, 1000)
 
     // refresh every 10 seconds
-    setInterval(function() {
-      self.refreshMetrics(port);
-    }, 10000)
-
-    // output any data sent back FROM the arduino (for confirmation)
-    port.on('data', function(data){
-      console.log('serial incoming -> ', data);
-    });
+    setInterval(refreshMetrics, 10000)
   });
 
-  port.on('error', function(e) {
-    console.error('error on serial connection: ', e);
-  });
+  // output any data sent back FROM the arduino (for confirmation)
+  port.on('data', handleSerialData);
+
+  port.on('error', handleSerialError);
 };
 
 ServoMeter.prototype.refreshMetrics = function(port) {
@@ -71,6 +76,7 @@ ServoMeter.prototype.refreshMetrics = function(port) {
   req.on('error', function(e) {
     console.error('Error requesting metrics: ', e);
   });
+  
   req.end();
 }
 
