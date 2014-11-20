@@ -1,0 +1,17 @@
+{
+  "name": "servometer-host",
+  "version": "1.0.0",
+  "description": "Simple application for requesting API data and sending to Arduino over serial USB",
+  "main": "servometer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "servometer-host"
+  ],
+  "author": "Jacob Quatier",
+  "license": "MIT",
+  "dependencies": {
+    "serialport": "^1.4.6"
+  }
+}
