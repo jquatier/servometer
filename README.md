@@ -8,3 +8,5 @@ This project includes 2 basic pieces:
 
 * `servometer-host` - a NodeJS application to request data from an API or service and send to the Arduino over serial USB.
 * `servometer` - the actual Arduino code to recieve data over serial and display using servos and LED displays.
+
+![](img/meter.jpg)
