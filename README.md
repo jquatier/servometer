@@ -10,10 +10,11 @@ This project includes 2 basic pieces:
 
 ![](img/meter.jpg)
 
-###### parts list
+##### parts list
 * 1x Arduino Uno
 * 1x Micro Servo (any brand)
 * 2x [Adafruit 0.56" 4-Digit 7-Segment Display](http://www.adafruit.com/products/881)
 * 1x [Adafruit Bicolor LED Square Pixel Matrix](http://www.adafruit.com/products/902)
 
-##### construction & design (coming soon)
+##### construction & design
+- [Download my design on Easel](https://www.inventables.com/projects/website-response-time-meter) or [check out my blog post](http://www.jacobquatier.com/posts/2014/12/01/the-meter/) for more details on the project.
