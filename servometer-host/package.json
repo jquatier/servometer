@@ -12,6 +12,6 @@
   "author": "Jacob Quatier",
   "license": "MIT",
   "dependencies": {
-    "serialport": "^2.0.6"
+    "serialport": "^7.1.1"
   }
 }
