@@ -1,7 +1,6 @@
 
-var serialport = require('serialport'),
-  SerialPort = serialport.SerialPort,
-  sys = require('sys'),
+const Readline = require('@serialport/parser-readline')
+const SerialPort = require('serialport'),
   https = require('https');
 
 function handleSerialData(data) {
@@ -33,8 +32,8 @@ ServoMeter.prototype.start = function() {
   var self = this;
   console.log('starting ServoMeter');
 
-  var port = new SerialPort(self._serialPort, {parser: serialport.parsers.readline('\n')});
-
+  const port = new SerialPort(self._serialPort);
+  port.pipe(new Readline({ delimiter: '\n' }))
   function refreshMetrics(){
     self.refreshMetrics(port);
   }
