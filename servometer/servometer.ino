@@ -60,6 +60,7 @@ String display1Value = NOT_STRING;
 String display2Value = SURE_STRING;
 String currentHealth = "";
 int servoAngle = SERVO_MAX;
+int currentServoAngle = SERVO_MAX;
 int noDataCount = 0;
 
 /*
@@ -99,6 +100,7 @@ void loop()
     display2Value = formatValueForSegmentDisplay(getValueFromResponse(receivedData, ':', 1));
     currentHealth = getValueFromResponse(receivedData, ':', 2);
     servoAngle = findServoAngle(display1Value);
+    Serial.println("new servo angle: " + servoAngle);
     noDataCount = 0;
   } 
   else 
@@ -134,10 +136,23 @@ void loop()
   // update matrix for health display
   updateHealthMatrix(currentHealth);
   
-  // write servo angle for meter
-  servo.write(servoAngle);
+  // move servo angle for meter
+  moveServo();
   
   delay(500);
+}
+
+void moveServo() {
+  if(servoAngle == currentServoAngle) {
+    return;
+  }
+  else {
+    while(currentServoAngle != servoAngle) {
+      currentServoAngle += (servoAngle > currentServoAngle ? 1 : -1);
+      servo.write(currentServoAngle);
+      delay(50);
+    }
+  }
 }
 
 void updateHealthMatrix(String health)
