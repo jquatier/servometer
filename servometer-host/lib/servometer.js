@@ -1,7 +1,6 @@
 
 const Readline = require('@serialport/parser-readline')
 const SerialPort = require('serialport'),
-  sys = require('sys'),
   https = require('https');
 
 function handleSerialData(data) {
