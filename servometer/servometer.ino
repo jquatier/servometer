@@ -197,7 +197,7 @@ String getValueFromResponse(String data, char separator, int index)
 */
 int findServoAngle(String value)
 {
-  return (180 - map(value.toInt(), 0, 2000, SERVO_MIN, SERVO_MAX));
+  return constrain((180 - map(value.toInt(), 0, 2000, SERVO_MIN, SERVO_MAX)), SERVO_MIN, SERVO_MAX);
 }
 
 /*
