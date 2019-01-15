@@ -11,6 +11,19 @@ function handleSerialError(err) {
   console.error('error on serial connection: ', err);
 }
 
+function findSerialPort() {
+  return new Promise((resolve, reject) => {
+    SerialPort.list((err, ports) => {
+      const arduinoPort = ports.find(port => port.manufacturer && port.manufacturer.includes('arduino'));
+      if (!arduinoPort) {
+        return reject(new Error('Unable to auto-locate Arduino port, try configuring the [serialPort] option'));
+      }
+      console.log(`Found Arduino @ ${arduinoPort.comName}`)
+      return resolve(arduinoPort.comName);
+    });
+  });
+}
+
 /*
   servometer host application
   This nodeJS application handles requesting metrics data from an API
@@ -28,9 +41,13 @@ function ServoMeter(options) {
   this.formatSerialData = options.formatSerialData;
 }
 
-ServoMeter.prototype.start = function() {
+ServoMeter.prototype.start = async function() {
   var self = this;
   console.log('starting ServoMeter');
+
+  if(!self._serialPort) {
+    self._serialPort = await findSerialPort();
+  }
 
   const port = new SerialPort(self._serialPort);
   port.pipe(new Readline({ delimiter: '\n' }))
